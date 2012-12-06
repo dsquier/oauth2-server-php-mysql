@@ -1,0 +1,12 @@
+--
+-- oauth2-server-php-DDL
+--
+-- Sample data from createMysqlDb() with a few changes/additions to support
+-- tests in PdoTest.php and database contraints (i.e., redirect_uri NOT NULL)
+--
+
+INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("oauth_test_client", "testpass", "/authenticated");
+INSERT INTO oauth_access_tokens (access_token, client_id) VALUES ("testtoken", "Some Client");
+INSERT INTO oauth_authorization_codes (authorization_code, client_id, redirect_uri) VALUES ("testcode", "Some Client", "/authenticated");
+INSERT INTO oauth_users (username, password) VALUES ("testuser", "password");
+INSERT INTO oauth_users (username, password, first_name, last_name) VALUES ("testusername", "password", "Test", "User");
