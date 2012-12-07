@@ -44,7 +44,7 @@ CREATE TABLE oauth_authorization_codes (
 DROP TABLE IF EXISTS oauth_refresh_tokens;
 CREATE TABLE oauth_refresh_tokens (
   refresh_token       VARCHAR(40)    NOT NULL,
-  client_id           VARCHAR(40)    NOT NULL,
+  client_id           VARCHAR(80)    NOT NULL,
   user_id             INT UNSIGNED,
   expires             TIMESTAMP      NOT NULL,
   scope               VARCHAR(2000),
@@ -60,4 +60,3 @@ CREATE TABLE oauth_users (
   last_name           VARCHAR(80),
   PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
