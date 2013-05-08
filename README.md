@@ -1,5 +1,5 @@
-oauth2-server-php-DDL
-=====================
+oauth2-server-php-mysql
+=======================
 DDL to create MySQL database, user, and tables for PDO storage
 support of https://github.com/bshaffer/oauth2-server-php.
 
