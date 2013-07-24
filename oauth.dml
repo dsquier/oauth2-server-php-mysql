@@ -1,12 +1,19 @@
 --
--- oauth2-server-php-DDL
+-- https://github.com/dsquier/oauth2-server-php-mysql
 --
--- Sample data from createMysqlDb() with a few changes/additions to support
--- tests in PdoTest.php and database contraints (i.e., redirect_uri NOT NULL)
+-- DML to test MySQL 'oauth' database and tables for PDO storage
+-- support of https://github.com/bshaffer/oauth2-server-php.
 --
 
-INSERT INTO oauth_clients (client_id, client_secret, redirect_uri) VALUES ("oauth_test_client", "testpass", "/authenticated");
+INSERT INTO oauth_clients (client_id, client_secret, redirect_uri, default_scope, supported_scopes) VALUES ("oauth_test_client", "testpass", "/authenticated","defaultscope","defaultscope testscope");
+SELECT * FROM oauth_clients;
+
 INSERT INTO oauth_access_tokens (access_token, client_id) VALUES ("testtoken", "Some Client");
+SELECT * FROM oauth_access_tokens;
+
 INSERT INTO oauth_authorization_codes (authorization_code, client_id, redirect_uri) VALUES ("testcode", "Some Client", "/authenticated");
+SELECT * FROM oauth_authorization_codes;
+
 INSERT INTO oauth_users (username, password) VALUES ("testuser", "password");
-INSERT INTO oauth_users (username, password, first_name, last_name) VALUES ("testusername", "password", "Test", "User");
+INSERT INTO oauth_users (username, password, first_name, last_name, supported_scopes) VALUES ("testusername", "password", "Test", "User", "anothertestscope");
+SELECT * FROM oauth_users;
