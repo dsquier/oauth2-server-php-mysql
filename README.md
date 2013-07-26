@@ -1,26 +1,29 @@
 oauth2-server-php-mysql
 =======================
-DDL to create MySQL database, user, and tables for PDO storage
+DDL to create MySQL 'oauth' database and tables for PDO storage
 support of https://github.com/bshaffer/oauth2-server-php.
 
 Deployment
 ----------
-To deploy, log into MySQL as root and type:
+Log into MySQL as root and type:
 
 	mysql> source oauth.ddl
 
-This script creates a database called "oauth" and a user with a name
-and password of "oauth". Assuming PHP is on the same host as the MySQL 
-database, the PDO connection string will be:
+This will do the following:
 
-	$c = new PDO('mysql:dbname=oauth;host=localhost', 'oauth', 'oauth');
+* Drop any prior `oauth_backup` database.
+* Backup all tables from an existing `oauth` database to `oauth_backup`.
+* Drop any prior `oauth` database.
+* Create a new `oauth` user, database and tables.
+
+Scope Support
+-------------
+Scope storage is supported with ability to assign a default scope per client and supported scopes per client and user. Please note this is not currently supported in the oauth2-server-php library and will require updates to `Pdo.php`, `Scope.php`, and `TokenController.php` to implement.
+
+Once implemented, scopes can be defined and enforced at both the client level for all requests and at the user level for Resource Owner Password Credential
 
 Notes
 -----
-* This script DROPS all objects before creation, so take care when
-running on an existing 'oauth' database. 
-* You should change the database password for the 'oauth' user.
+* You should change the 'oauth' database password.
 * DML is included in oauth.dml to populate test data used by library.
-* Where possible, column constraints based on current library
-implementation (i.e., token length of 40 characters for authorization_code, 
-access_token, refresh_token.)
+* Where possible, column constraints based on current library implementation (i.e., token length of 40 characters for authorization_code, access_token, refresh_token.)
