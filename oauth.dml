@@ -5,7 +5,7 @@
 -- support of https://github.com/bshaffer/oauth2-server-php.
 --
 
-INSERT INTO oauth_clients (client_id, client_secret, redirect_uri, default_scope, supported_scopes) VALUES ("oauth_test_client", "testpass", "/authenticated","defaultscope","defaultscope testscope");
+INSERT INTO oauth_clients (client_id, client_secret, redirect_uri, grant_types, default_scope, supported_scopes) VALUES ("oauth_test_client", "testpass", "/authenticated","","defaultscope","defaultscope testscope");
 SELECT * FROM oauth_clients;
 
 INSERT INTO oauth_access_tokens (access_token, client_id) VALUES ("testtoken", "Some Client");

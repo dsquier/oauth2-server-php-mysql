@@ -32,7 +32,8 @@ CREATE TABLE oauth_clients (
   client_id           VARCHAR(80)    NOT NULL    COMMENT 'unique client identifier',
   client_secret       VARCHAR(80)    NOT NULL    COMMENT 'client secret',
   redirect_uri        VARCHAR(2000)  NOT NULL    COMMENT 'URI to redirect to after user approval',
-  default_scope       VARCHAR(80)                COMMENT 'scope to use if one is not requested (must exist in oauth_supported_scopes)',
+  grant_types         VARCHAR(80)                COMMENT 'if grant_types are not defined, then none are restricted',
+  default_scope       VARCHAR(80)                COMMENT 'scope to use if one is not requested (must exist in supported_scopes)',
   supported_scopes    VARCHAR(2000)              COMMENT 'space-delimited list of scopes client is permitted to request',
   PRIMARY KEY (client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
