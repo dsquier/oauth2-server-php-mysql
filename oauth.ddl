@@ -19,6 +19,7 @@ CREATE TABLE oauth_authorization_codes AS SELECT * FROM oauth.oauth_authorizatio
 CREATE TABLE oauth_refresh_tokens AS SELECT * FROM oauth.oauth_refresh_tokens;
 CREATE TABLE oauth_users AS SELECT * FROM oauth.oauth_users;
 CREATE TABLE oauth_jwt AS SELECT * FROM oauth.oauth_jwt;
+CREATE TABLE oauth_jwt AS SELECT * FROM oauth.oauth_globals;
 
 --
 -- Create oauth database and tables
@@ -81,6 +82,12 @@ CREATE TABLE oauth_jwt (
   subject             VARCHAR(80),
   public_key          VARCHAR(2000),
   PRIMARY KEY (client_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE oauth_globals (
+  oauth_key           VARCHAR(80)    NOT NULL,
+  oauth_value         VARCHAR(2000),
+  PRIMARY KEY (oauth_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SHOW TABLES;

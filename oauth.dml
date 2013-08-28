@@ -5,15 +5,22 @@
 -- support of https://github.com/bshaffer/oauth2-server-php.
 --
 
-INSERT INTO oauth_clients (client_id, client_secret, redirect_uri, grant_types, default_scope, supported_scopes) VALUES ("oauth_test_client", "testpass", "/authenticated","","defaultscope","defaultscope testscope");
+INSERT INTO oauth_clients (client_id, client_secret, supported_scopes, default_scope) VALUES ("Test Client ID", "TestSecret", "clientscope1 clientscope2", "clientscope1 clientscope2");
+INSERT INTO oauth_clients (client_id, client_secret, supported_scopes, default_scope) VALUES ("Test Client ID 2", "TestSecret", "clientscope3", "clientscope3");
+INSERT INTO oauth_clients (client_id, client_secret, supported_scopes, default_scope) VALUES ("Test Default Scope Client ID", "TestSecret", "clientscope1 clientscope2", "clientscope1 clientscope2");
+INSERT INTO oauth_clients (client_id, client_secret, supported_scopes, default_scope) VALUES ("Test Default Scope Client ID 2", "TestSecret", "clientscope3", "clientscope3");
+INSERT INTO oauth_clients (client_id, client_secret, grant_types) VALUES ("oauth_test_client", "testpass", "implicit password");
 SELECT * FROM oauth_clients;
 
 INSERT INTO oauth_access_tokens (access_token, client_id) VALUES ("testtoken", "Some Client");
 SELECT * FROM oauth_access_tokens;
 
-INSERT INTO oauth_authorization_codes (authorization_code, client_id, redirect_uri) VALUES ("testcode", "Some Client", "/authenticated");
+INSERT INTO oauth_authorization_codes (authorization_code, client_id) VALUES ("testcode", "Some Client");
 SELECT * FROM oauth_authorization_codes;
 
 INSERT INTO oauth_users (username, password) VALUES ("testuser", "password");
-INSERT INTO oauth_users (username, password, first_name, last_name, supported_scopes) VALUES ("testusername", "password", "Test", "User", "anothertestscope");
 SELECT * FROM oauth_users;
+
+INSERT INTO oauth_globals (oauth_key, oauth_value) VALUES ("supported_scopes", "scope1 scope2 scope3");
+INSERT INTO oauth_globals (oauth_key, oauth_value) VALUES ("default_scope", "scope1 scope2 scope3");
+SELECT * FROM oauth_globals;
