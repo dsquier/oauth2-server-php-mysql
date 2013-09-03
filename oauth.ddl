@@ -19,7 +19,7 @@ CREATE TABLE oauth_authorization_codes AS SELECT * FROM oauth.oauth_authorizatio
 CREATE TABLE oauth_refresh_tokens AS SELECT * FROM oauth.oauth_refresh_tokens;
 CREATE TABLE oauth_users AS SELECT * FROM oauth.oauth_users;
 CREATE TABLE oauth_jwt AS SELECT * FROM oauth.oauth_jwt;
-CREATE TABLE oauth_jwt AS SELECT * FROM oauth.oauth_globals;
+CREATE TABLE oauth_globals AS SELECT * FROM oauth.oauth_globals;
 
 --
 -- Create oauth database and tables

@@ -1,6 +1,6 @@
 oauth2-server-php-mysql
 =======================
-DDL to create MySQL **oauth** database and tables for PDO storage
+DDL to create MySQL `oauth` user, database, and tables for PDO storage
 support of https://github.com/bshaffer/oauth2-server-php.
 
 Deployment
@@ -9,14 +9,18 @@ Log into MySQL as root and type:
 
 	mysql> source oauth.ddl
 
-This will backup any tables that exist into `oauth_backup` and create a new `oauth` user, database and tables.
+This will create a new `oauth` user, database, and tables. Any existing tables will be backed up to `oauth_backup`. To load the test data used for Travis CI:
+
+    mysql> source oauth.dml
 
 Notes
 -----
-* You should change the 'oauth' database password.
-* DML is included in oauth.dml to populate test data used by library.
-* Where possible, column constraints based on current library implementation (i.e., token length of 40 characters for authorization_code, access_token, refresh_token.)
-* Supports scope storage with *default* and *supported* scopes per client, and *supported* scopes per user (Note: requires changes to Pdo.php and TokenController.php)
+* Tracks **develop** branch of https://github.com/bshaffer/oauth2-server-php.
+* Storage for *Global* and *Client* `supported_scopes` and `default_scope`.
+* Where possible, column constraints based on current library implementation
+(i.e., token length of 40 characters for authorization_code, access_token, refresh_token.)
+* You should change the `oauth` user password.
+
 
 Tables
 ------
@@ -92,4 +96,13 @@ Tables
 | last_name        | varchar(80)      | YES  |     | NULL    |                |
 | supported_scopes | varchar(2000)    | YES  |     | NULL    |                |
 +------------------+------------------+------+-----+---------+----------------+
+```
+**oauth_globals**
+```
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| oauth_key   | varchar(80)   | NO   | PRI | NULL    |       |
+| oauth_value | varchar(2000) | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
 ```
