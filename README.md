@@ -51,16 +51,16 @@ Tables
 ```
 **oauth_clients**
 ```
-+------------------+---------------+------+-----+---------+-------+
-| Field            | Type          | Null | Key | Default | Extra |
-+------------------+---------------+------+-----+---------+-------+
-| client_id        | varchar(80)   | NO   | PRI | NULL    |       |
-| client_secret    | varchar(80)   | NO   |     | NULL    |       |
-| redirect_uri     | varchar(2000) | NO   |     | NULL    |       |
-| grant_types      | varchar(80)   | YES  |     | NULL    |       |
-| supported_scopes | varchar(2000) | YES  |     | NULL    |       |
-| default_scope    | varchar(2000) | YES  |     | NULL    |       |
-+------------------+---------------+------+-----+---------+-------+
++-----------------------+---------------+------+-----+---------+-------+
+| Field                 | Type          | Null | Key | Default | Extra |
++-----------------------+---------------+------+-----+---------+-------+
+| client_id             | varchar(80)   | NO   | PRI | NULL    |       |
+| client_secret         | varchar(80)   | NO   |     | NULL    |       |
+| redirect_uri          | varchar(2000) | YES  |     | NULL    |       |
+| grant_types           | varchar(80)   | YES  |     | NULL    |       |
+| supported_scope_group | varchar(80)   | YES  |     | NULL    |       |
+| default_scope_group   | varchar(80)   | YES  |     | NULL    |       |
++-----------------------+---------------+------+-----+---------+-------+
 ```
 **oauth_jwt**
 ```
@@ -94,15 +94,14 @@ Tables
 | password         | varchar(80)      | YES  |     | NULL    |                |
 | first_name       | varchar(80)      | YES  |     | NULL    |                |
 | last_name        | varchar(80)      | YES  |     | NULL    |                |
-| supported_scopes | varchar(2000)    | YES  |     | NULL    |                |
 +------------------+------------------+------+-----+---------+----------------+
 ```
-**oauth_globals**
+**oauth_scopes**
 ```
 +-------------+---------------+------+-----+---------+-------+
 | Field       | Type          | Null | Key | Default | Extra |
 +-------------+---------------+------+-----+---------+-------+
-| oauth_key   | varchar(80)   | NO   | PRI | NULL    |       |
-| oauth_value | varchar(2000) | YES  |     | NULL    |       |
+| scope_group | varchar(80)   | NO   | PRI | NULL    |       |
+| scope       | varchar(2000) | YES  |     | NULL    |       |
 +-------------+---------------+------+-----+---------+-------+
 ```
