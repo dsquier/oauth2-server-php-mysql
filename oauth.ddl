@@ -19,7 +19,7 @@ CREATE TABLE oauth_authorization_codes AS SELECT * FROM oauth.oauth_authorizatio
 CREATE TABLE oauth_refresh_tokens AS SELECT * FROM oauth.oauth_refresh_tokens;
 CREATE TABLE oauth_users AS SELECT * FROM oauth.oauth_users;
 CREATE TABLE oauth_jwt AS SELECT * FROM oauth.oauth_jwt;
-CREATE TABLE oauth_globals AS SELECT * FROM oauth.oauth_globals;
+CREATE TABLE oauth_scopes AS SELECT * FROM oauth.oauth_scopes;
 
 --
 -- Create oauth database and tables
@@ -30,21 +30,21 @@ CREATE DATABASE oauth;
 USE oauth;
 
 CREATE TABLE oauth_clients (
-  client_id           VARCHAR(80)    NOT NULL    COMMENT 'unique client identifier',
-  client_secret       VARCHAR(80)    NOT NULL    COMMENT 'client secret',
-  redirect_uri        VARCHAR(2000)  NOT NULL    COMMENT 'URI to redirect to after user approval',
-  grant_types         VARCHAR(80)                COMMENT 'space-delimited list of grant types permitted, null = all',
-  supported_scopes    VARCHAR(2000)              COMMENT 'space-delimited list of scopes client is permitted to request',
-  default_scope       VARCHAR(2000)              COMMENT 'scope(s) to request if client does not specify one, null = none',
+  client_id             VARCHAR(80)   NOT NULL COMMENT 'Unique client identifier',
+  client_secret         VARCHAR(80)   NOT NULL COMMENT 'Client secret',
+  redirect_uri          VARCHAR(2000)          COMMENT 'Redirect URI used for Authorization Grant',
+  grant_types           VARCHAR(80)            COMMENT 'Space-delimited list of grant types permitted, null = all',
+  supported_scope_group VARCHAR(80)            COMMENT 'Foreign key to oauth_scopes.scope_group',
+  default_scope_group   VARCHAR(80)            COMMENT 'Foreign key to oauth_scopes.scope_group',
   PRIMARY KEY (client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE oauth_access_tokens (
-  access_token        VARCHAR(40)    NOT NULL,
-  client_id           VARCHAR(80)    NOT NULL,
-  user_id             INT UNSIGNED,
-  expires             TIMESTAMP      NOT NULL,
-  scope               VARCHAR(2000),
+  access_token         VARCHAR(40)    NOT NULL,
+  client_id            VARCHAR(80)    NOT NULL,
+  user_id              INT UNSIGNED,
+  expires              TIMESTAMP      NOT NULL,
+  scope                VARCHAR(2000),
   PRIMARY KEY (access_token)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -73,7 +73,6 @@ CREATE TABLE oauth_users (
   password            VARCHAR(80),
   first_name          VARCHAR(80),
   last_name           VARCHAR(80),
-  supported_scopes    VARCHAR(2000)              COMMENT 'space-delimited list of scopes user is permitted to request',
   PRIMARY KEY (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -84,10 +83,10 @@ CREATE TABLE oauth_jwt (
   PRIMARY KEY (client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE oauth_globals (
-  oauth_key           VARCHAR(80)    NOT NULL,
-  oauth_value         VARCHAR(2000),
-  PRIMARY KEY (oauth_key)
+CREATE TABLE oauth_scopes (
+  scope_group           VARCHAR(80)    NOT NULL,
+  scope                 VARCHAR(2000),
+  PRIMARY KEY (scope_group)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SHOW TABLES;
