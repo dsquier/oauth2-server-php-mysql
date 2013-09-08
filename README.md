@@ -57,8 +57,6 @@ Tables
 | client_secret         | varchar(80)   | NO   |     | NULL    |       |
 | redirect_uri          | varchar(2000) | YES  |     | NULL    |       |
 | grant_types           | varchar(80)   | YES  |     | NULL    |       |
-| supported_scope_group | varchar(80)   | YES  |     | NULL    |       |
-| default_scope_group   | varchar(80)   | YES  |     | NULL    |       |
 +-----------------------+---------------+------+-----+---------+-------+
 ```
 **oauth_jwt**
@@ -97,10 +95,11 @@ Tables
 ```
 **oauth_scopes**
 ```
-+-------------+---------------+------+-----+---------+-------+
-| Field       | Type          | Null | Key | Default | Extra |
-+-------------+---------------+------+-----+---------+-------+
-| scope_group | varchar(80)   | NO   | PRI | NULL    |       |
-| scope       | varchar(2000) | YES  |     | NULL    |       |
-+-------------+---------------+------+-----+---------+-------+
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| type      | varchar(80)   | NO   | PRI | NULL    |       |
+| scope     | varchar(2000) | NO   |     | NULL    |       |
+| client_id | varchar(80)   | NO   | PRI |         |       |
++-----------+---------------+------+-----+---------+-------+
 ```
