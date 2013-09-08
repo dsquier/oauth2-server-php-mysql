@@ -5,10 +5,10 @@
 -- support of https://github.com/bshaffer/oauth2-server-php.
 --
 
-INSERT INTO oauth_clients (client_id, client_secret, supported_scope_group, default_scope_group) VALUES ("Test Client ID", "TestSecret", "client_scopes1", "client_scopes1");
-INSERT INTO oauth_clients (client_id, client_secret, supported_scope_group, default_scope_group) VALUES ("Test Client ID 2", "TestSecret", "client_scopes2", "client_scopes2");
-INSERT INTO oauth_clients (client_id, client_secret, supported_scope_group, default_scope_group) VALUES ("Test Default Scope Client ID", "TestSecret", "client_scopes1", "client_scopes1");
-INSERT INTO oauth_clients (client_id, client_secret, supported_scope_group, default_scope_group) VALUES ("Test Default Scope Client ID 2", "TestSecret", "client_scopes3", "client_scopes3");
+INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Client ID", "TestSecret");
+INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Client ID 2", "TestSecret");
+INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Default Scope Client ID", "TestSecret");
+INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Default Scope Client ID 2", "TestSecret");
 INSERT INTO oauth_clients (client_id, client_secret, grant_types) VALUES ("oauth_test_client", "testpass", "implicit password");
 SELECT * FROM oauth_clients;
 
@@ -21,9 +21,14 @@ SELECT * FROM oauth_authorization_codes;
 INSERT INTO oauth_users (username, password) VALUES ("testuser", "password");
 SELECT * FROM oauth_users;
 
-INSERT INTO oauth_scopes (scope_group, scope) VALUES ("default_scopes", "clientscope1");
-INSERT INTO oauth_scopes (scope_group, scope) VALUES ("supported_scopes", "clientscope1 clientscope2 clientscope3 clientscope4");
-INSERT INTO oauth_scopes (scope_group, scope) VALUES ("client_scopes1", "clientscope1 clientscope2");
-INSERT INTO oauth_scopes (scope_group, scope) VALUES ("client_scopes2", "clientscope1 clientscope2 clientscope3");
-INSERT INTO oauth_scopes (scope_group, scope) VALUES ("client_scopes3", "clientscope3");
+INSERT INTO oauth_scopes (type, scope) VALUES ("supported", "supportedscope1 supportedscope2 supportedscope3 supportedscope4");
+INSERT INTO oauth_scopes (type, scope) VALUES ("default", "defaultscope1 defaultscope2");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2", "Test Client ID");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Client ID");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2 clientscope3", "Test Client ID 2");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Client ID 2");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2", "Test Default Scope Client ID");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Default Scope Client ID");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2 clientscope3", "Test Default Scope Client ID 2");
+INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope3", "Test Default Scope Client ID 2");
 SELECT * FROM oauth_scopes;

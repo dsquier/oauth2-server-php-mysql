@@ -1,26 +1,25 @@
 oauth2-server-php-mysql
 =======================
-DDL to create MySQL `oauth` user, database, and tables for PDO storage
+DDL to create MySQL oauth user and database for PDO storage
 support of https://github.com/bshaffer/oauth2-server-php.
 
 Deployment
 ----------
-Log into MySQL as root and type:
+1) Create a new oauth user and database:
 
 	mysql> source oauth.ddl
 
-This will create a new `oauth` user, database, and tables. Any existing tables will be backed up to `oauth_backup`. To load the test data used for Travis CI:
+2) Load test data:
 
     mysql> source oauth.dml
 
 Notes
 -----
 * Tracks **develop** branch of https://github.com/bshaffer/oauth2-server-php.
-* Storage for *Global* and *Client* `supported_scopes` and `default_scope`.
 * Where possible, column constraints based on current library implementation
 (i.e., token length of 40 characters for authorization_code, access_token, refresh_token.)
-* You should change the `oauth` user password.
-
+* You should change the **oauth** user password.
+* Any existing tables will be saved to **oauth_backup**
 
 Tables
 ------

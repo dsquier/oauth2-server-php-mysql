@@ -34,8 +34,6 @@ CREATE TABLE oauth_clients (
   client_secret         VARCHAR(80)   NOT NULL COMMENT 'Client secret',
   redirect_uri          VARCHAR(2000)          COMMENT 'Redirect URI used for Authorization Grant',
   grant_types           VARCHAR(80)            COMMENT 'Space-delimited list of grant types permitted, null = all',
-  supported_scope_group VARCHAR(80)            COMMENT 'Foreign key to oauth_scopes.scope_group',
-  default_scope_group   VARCHAR(80)            COMMENT 'Foreign key to oauth_scopes.scope_group',
   PRIMARY KEY (client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -84,9 +82,10 @@ CREATE TABLE oauth_jwt (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE oauth_scopes (
-  scope_group           VARCHAR(80)    NOT NULL,
-  scope                 VARCHAR(2000),
-  PRIMARY KEY (scope_group)
+  type                VARCHAR(80)    NOT NULL,
+  scope               VARCHAR(2000)  NOT NULL,
+  client_id           VARCHAR(80),
+  PRIMARY KEY (type, client_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SHOW TABLES;
