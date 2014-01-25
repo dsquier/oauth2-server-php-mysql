@@ -5,13 +5,26 @@
 -- support of https://github.com/bshaffer/oauth2-server-php.
 --
 
-INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Client ID", "TestSecret");
-INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Client ID 2", "TestSecret");
-INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Default Scope Client ID", "TestSecret");
-INSERT INTO oauth_clients (client_id, client_secret) VALUES ("Test Default Scope Client ID 2", "TestSecret");
+-- Scopes
+INSERT INTO oauth_scopes (scope) VALUES ('supportedscope1');
+INSERT INTO oauth_scopes (scope) VALUES ('supportedscope2');
+INSERT INTO oauth_scopes (scope) VALUES ('supportedscope3');
+INSERT INTO oauth_scopes (scope) VALUES ('supportedscope4');
+INSERT INTO oauth_scopes (scope) VALUES ('clientscope1');
+INSERT INTO oauth_scopes (scope) VALUES ('clientscope2');
+INSERT INTO oauth_scopes (scope) VALUES ('clientscope3');
+INSERT INTO oauth_scopes (scope, is_default) VALUES ('defaultscope1', 1);
+INSERT INTO oauth_scopes (scope, is_default) VALUES ('defaultscope2', 1);
+SELECT * FROM oauth_scopes;
+
+-- Clients
+INSERT INTO oauth_clients (client_id, client_secret, scope) VALUES ("Test Client ID", "TestSecret", "clientscope1 clientscope2");
+INSERT INTO oauth_clients (client_id, client_secret, scope) VALUES ("Test Client ID 2", "TestSecret", "clientscope1 clientscope2 clientscope3");
+INSERT INTO oauth_clients (client_id, client_secret, scope) VALUES ("Test Default Scope Client ID", "TestSecret", "clientscope1 clientscope2");
 INSERT INTO oauth_clients (client_id, client_secret, grant_types) VALUES ("oauth_test_client", "testpass", "implicit password");
 SELECT * FROM oauth_clients;
 
+-- Misc
 INSERT INTO oauth_access_tokens (access_token, client_id) VALUES ("testtoken", "Some Client");
 SELECT * FROM oauth_access_tokens;
 
@@ -21,14 +34,8 @@ SELECT * FROM oauth_authorization_codes;
 INSERT INTO oauth_users (username, password) VALUES ("testuser", "password");
 SELECT * FROM oauth_users;
 
-INSERT INTO oauth_scopes (type, scope) VALUES ("supported", "supportedscope1 supportedscope2 supportedscope3 supportedscope4");
-INSERT INTO oauth_scopes (type, scope) VALUES ("default", "defaultscope1 defaultscope2");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2", "Test Client ID");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Client ID");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2 clientscope3", "Test Client ID 2");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Client ID 2");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2", "Test Default Scope Client ID");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope1 clientscope2", "Test Default Scope Client ID");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("supported", "clientscope1 clientscope2 clientscope3", "Test Default Scope Client ID 2");
-INSERT INTO oauth_scopes (type, scope, client_id) VALUES ("default", "clientscope3", "Test Default Scope Client ID 2");
-SELECT * FROM oauth_scopes;
+-- Ensure path to rsa keys is valid, placeholder used here
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES (NULL, "/home/keys/id_rsa.pub", "/home/keys/id_rsa", "RS256");
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_One", "client_1_public", "client_1_private", "RS256");
+INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("ClientID_Two", "client_2_public", "client_2_private", "RS256");
+SELECT * FROM oauth_public_keys;
