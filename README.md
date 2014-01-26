@@ -32,7 +32,7 @@ Tables
 | client_id    | varchar(80)      | NO   |     | NULL              |                             |
 | user_id      | int(10) unsigned | YES  |     | NULL              |                             |
 | expires      | timestamp        | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| scope        | varchar(2000)    | YES  |     | NULL              |                             |
+| scope        | varchar(4000)    | YES  |     | NULL              |                             |
 +--------------+------------------+------+-----+-------------------+-----------------------------+
 ```
 **oauth_authorization_codes**
@@ -45,29 +45,30 @@ Tables
 | user_id            | int(10) unsigned | YES  |     | NULL              |                             |
 | redirect_uri       | varchar(2000)    | NO   |     | NULL              |                             |
 | expires            | timestamp        | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| scope              | varchar(2000)    | YES  |     | NULL              |                             |
+| scope              | varchar(4000)    | YES  |     | NULL              |                             |
 +--------------------+------------------+------+-----+-------------------+-----------------------------+
 ```
 **oauth_clients**
 ```
-+-----------------------+---------------+------+-----+---------+-------+
-| Field                 | Type          | Null | Key | Default | Extra |
-+-----------------------+---------------+------+-----+---------+-------+
-| client_id             | varchar(80)   | NO   | PRI | NULL    |       |
-| client_secret         | varchar(80)   | NO   |     | NULL    |       |
-| redirect_uri          | varchar(2000) | YES  |     | NULL    |       |
-| grant_types           | varchar(80)   | YES  |     | NULL    |       |
-+-----------------------+---------------+------+-----+---------+-------+
++----------------------+---------------+------+-----+---------+-------+
+| Field                | Type          | Null | Key | Default | Extra |
++----------------------+---------------+------+-----+---------+-------+
+| client_id            | varchar(80)   | YES  |     | NULL    |       |
+| public_key           | varchar(2000) | YES  |     | NULL    |       |
+| private_key          | varchar(2000) | YES  |     | NULL    |       |
+| encryption_algorithm | varchar(100)  | YES  |     | RS256   |       |
++----------------------+---------------+------+-----+---------+-------+
 ```
-**oauth_jwt**
+**oauth_public_keyds**
 ```
-+------------+---------------+------+-----+---------+-------+
-| Field      | Type          | Null | Key | Default | Extra |
-+------------+---------------+------+-----+---------+-------+
-| client_id  | varchar(80)   | NO   | PRI | NULL    |       |
-| subject    | varchar(80)   | YES  |     | NULL    |       |
-| public_key | varchar(2000) | YES  |     | NULL    |       |
-+------------+---------------+------+-----+---------+-------+
++----------------------+---------------+------+-----+---------+-------+
+| Field                | Type          | Null | Key | Default | Extra |
++----------------------+---------------+------+-----+---------+-------+
+| client_id            | varchar(80)   | YES  |     | NULL    |       |
+| public_key           | varchar(2000) | YES  |     | NULL    |       |
+| private_key          | varchar(2000) | YES  |     | NULL    |       |
+| encryption_algorithm | varchar(100)  | YES  |     | RS256   |       |
++----------------------+---------------+------+-----+---------+-------+
 ```
 **oauth_refresh_tokens**
 ```
@@ -78,8 +79,17 @@ Tables
 | client_id     | varchar(80)      | NO   |     | NULL              |                             |
 | user_id       | int(10) unsigned | YES  |     | NULL              |                             |
 | expires       | timestamp        | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-| scope         | varchar(2000)    | YES  |     | NULL              |                             |
+| scope         | varchar(4000)    | YES  |     | NULL              |                             |
 +---------------+------------------+------+-----+-------------------+-----------------------------+
+```
+**oauth_scopes**
+```
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| scope      | varchar(80) | NO   | PRI | NULL    |       |
+| is_default | tinyint(1)  | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
 ```
 **oauth_users**
 ```
@@ -91,15 +101,6 @@ Tables
 | password         | varchar(80)      | YES  |     | NULL    |                |
 | first_name       | varchar(80)      | YES  |     | NULL    |                |
 | last_name        | varchar(80)      | YES  |     | NULL    |                |
+| scope            | varchar(4000)    | YES  |     | NULL    |                |
 +------------------+------------------+------+-----+---------+----------------+
-```
-**oauth_scopes**
-```
-+-----------+---------------+------+-----+---------+-------+
-| Field     | Type          | Null | Key | Default | Extra |
-+-----------+---------------+------+-----+---------+-------+
-| type      | varchar(80)   | NO   | PRI | NULL    |       |
-| scope     | varchar(2000) | NO   |     | NULL    |       |
-| client_id | varchar(80)   | NO   | PRI |         |       |
-+-----------+---------------+------+-----+---------+-------+
 ```
