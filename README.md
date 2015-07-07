@@ -1,25 +1,43 @@
 oauth2-server-php-mysql
 =======================
-DDL to create MySQL oauth user and database for PDO storage
-support of https://github.com/bshaffer/oauth2-server-php.
+DDL to create MySQL oauth user and database for PDO storage support of https://github.com/bshaffer/oauth2-server-php.
 
 Deployment
 ----------
-1) Create a new oauth user and database:
+####Create database:
 
     mysql> source oauth.ddl
 
-2) Load test data:
+If there is an existing `oauth` database, a copy will be saved to `oauth_backup` prior to dropping and creating a new `oauth` database and tables.
 
-    mysql> source oauth.dml
+####Load test data:
 
-Notes
------
-* Tracks current production branch of https://github.com/bshaffer/oauth2-server-php.
-* Where possible, column constraints based on current library implementation
-(i.e., token length of 40 characters for authorization_code, access_token, refresh_token.)
-* You should change the **oauth** user password.
-* Any existing tables will be saved to **oauth_backup**
+    mysql> source test-data.sql
+
+Test data is used to perform unit testing of the PDO interface and also to provide an example implementation for the different grant types. This file should not be run for production deployments.
+
+Using Scopes? Read This!
+--------
+There are nuances to how scopes are implemented and enforced using PDO storage that are critical to a secure OAuth implementation.
+
+If your application:
+
+* Uses scopes
+* AND implements the Resource Owner Password Credential grant type
+* AND implements another grant type (such as Client Credentials)
+
+You may want to insert a "dummy" value for `oauth_clients.scope`:
+
+    mysql> INSERT INTO oauth_clients (client_id, scope) VALUES (YOUR_CLIENT_ID, "dummy-value");
+
+Why? A `NULL` value in `oauth_clients.scope` will cause a token to be granted with ALL default scopes found in `oauth_scopes`.
+
+Other Helpful Tips
+------------
+* A token must have ALL scopes listed on an endpoint to gain access to it.
+* If any single scope is missing, access will be denied.
+* Mixing Resource Owners Password Credential grant type with other grant types can result in unexpected security gaps (see above).
+* Of course, always **change** the `oauth` user password for production deployments.
 
 Tables
 ------
@@ -63,14 +81,26 @@ Tables
 | public_key    | varchar(2000)    | YES  |     | NULL    |       |
 +---------------+------------------+------+-----+---------+-------+
 ```
+**oauth_jti**
+```
++------------+---------------+------+-----+-------------------+-----------------------------+
+| Field      | Type          | Null | Key | Default           | Extra                       |
++------------+---------------+------+-----+-------------------+-----------------------------+
+| issuer     | varchar(80)   | NO   |     | NULL              |                             |
+| subject    | varchar(80)   | YES  |     | NULL              |                             |
+| audience   | varchar(80)   | YES  |     | NULL              |                             |
+| expires    | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| jti        | varchar(2000) | NO   |     | NULL              |                             |
++------------+---------------+------+-----+-------------------+-----------------------------+
+```
 **oauth_jwt**
 ```
 +------------+---------------+------+-----+---------+-------+
 | Field      | Type          | Null | Key | Default | Extra |
 +------------+---------------+------+-----+---------+-------+
-| client_id  | varchar(80)   | YES  |     | NULL    |       |
+| client_id  | varchar(80)   | NO   |     | NULL    |       |
 | subject    | varchar(80)   | YES  |     | NULL    |       |
-| public_key | varchar(2000) | YES  |     | NULL    |       |
+| public_key | varchar(2000) | NO   |     | NULL    |       |
 +------------+---------------+------+-----+---------+-------+
 ```
 **oauth_public_keys**
@@ -110,13 +140,12 @@ Tables
 +----------------+------------------+------+-----+---------+----------------+
 | Field          | Type             | Null | Key | Default | Extra          |
 +----------------+------------------+------+-----+---------+----------------+
-| user_id        | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
 | username       | varchar(80)      | YES  |     | NULL    |                |
 | password       | varchar(80)      | YES  |     | NULL    |                |
 | first_name     | varchar(80)      | YES  |     | NULL    |                |
 | last_name      | varchar(80)      | YES  |     | NULL    |                |
-| scope          | varchar(4000)    | YES  |     | NULL    |                |
 | email          | varchar(2000)    | YES  |     | NULL    |                |
 | email_verified | tinyint(1)       | YES  |     | NULL    |                |
+| scope          | varchar(4000)    | YES  |     | NULL    |                |
 +----------------+------------------+------+-----+---------+----------------+
 ```
