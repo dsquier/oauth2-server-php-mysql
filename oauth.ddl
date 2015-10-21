@@ -58,7 +58,7 @@ CREATE TABLE oauth_authorization_codes (
 
 CREATE TABLE oauth_clients (
   client_id            VARCHAR(80)   NOT NULL COMMENT 'Unique client identifier',
-  client_secret        VARCHAR(80)   NOT NULL COMMENT 'Client secret',
+  client_secret        VARCHAR(80)            COMMENT 'Client secret',
   redirect_uri         VARCHAR(2000)          COMMENT 'Redirect URI used for Authorization Grant',
   grant_types          VARCHAR(80)            COMMENT 'Space-delimited list of grant types permitted, null = all',
   scope                VARCHAR(4000)          COMMENT 'Space-delimited list of approved scopes',

@@ -73,7 +73,7 @@ Tables
 | Field         | Type             | Null | Key | Default | Extra |
 +---------------+------------------+------+-----+---------+-------+
 | client_id     | varchar(80)      | NO   | PRI | NULL    |       |
-| client_secret | varchar(80)      | NO   |     | NULL    |       |
+| client_secret | varchar(80)      | YES  |     | NULL    |       |
 | redirect_uri  | varchar(2000)    | YES  |     | NULL    |       |
 | grant_types   | varchar(80)      | YES  |     | NULL    |       |
 | scope         | varchar(4000)    | YES  |     | NULL    |       |
