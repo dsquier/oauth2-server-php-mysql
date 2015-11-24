@@ -1,24 +1,14 @@
---
 -- https://github.com/dsquier/oauth2-server-php-mysql
 --
 -- DDL to create MySQL oauth database and tables for PDO storage
 -- support of https://github.com/bshaffer/oauth2-server-php.
---
 
---
 -- Drop any old backups and create a new backup of tables to be created
---
 DROP DATABASE IF EXISTS oauth_backup;
 CREATE DATABASE oauth_backup;
 USE oauth_backup;
 
---
 -- Create copies of all production tables
---
--- Note: will error if any of these tables do not exist, To resolve:
--- * In the shell, run as a script using the "mysql -f" flag
--- * In MySQL Workbench, untick the option under Query to "Stop Script Execution on Errors"
---
 CREATE TABLE oauth_access_tokens AS SELECT * FROM oauth.oauth_access_tokens;
 CREATE TABLE oauth_authorization_codes AS SELECT * FROM oauth.oauth_authorization_codes;
 CREATE TABLE oauth_clients AS SELECT * FROM oauth.oauth_clients;
@@ -29,41 +19,38 @@ CREATE TABLE oauth_refresh_tokens AS SELECT * FROM oauth.oauth_refresh_tokens;
 CREATE TABLE oauth_scopes AS SELECT * FROM oauth.oauth_scopes;
 CREATE TABLE oauth_users AS SELECT * FROM oauth.oauth_users;
 
---
 -- Create oauth database and tables
---
 DROP DATABASE IF EXISTS oauth;
 CREATE DATABASE oauth;
 USE oauth;
 
 CREATE TABLE oauth_access_tokens (
-  access_token         VARCHAR(40)    NOT NULL,
-  client_id            VARCHAR(80),
-  user_id              INT UNSIGNED,
-  expires              TIMESTAMP      NOT NULL,
-  scope                VARCHAR(4000),
+  access_token         VARCHAR(40)    NOT NULL COMMENT 'System generated access token',
+  client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
+  user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
+  expires              TIMESTAMP      NOT NULL COMMENT 'When the token becomes invalid',
+  scope                VARCHAR(4000)           COMMENT 'Space-delimited list of scopes token can access',
   PRIMARY KEY (access_token)
 );
 
 CREATE TABLE oauth_authorization_codes (
-  authorization_code   VARCHAR(40)    NOT NULL,
-  client_id            VARCHAR(80),
-  user_id              INT UNSIGNED,
-  redirect_uri         VARCHAR(2000)  NOT NULL,
-  expires              TIMESTAMP      NOT NULL,
-  scope                VARCHAR(4000),
-  id_token             VARCHAR(80),
+  authorization_code   VARCHAR(40)    NOT NULL COMMENT 'System generated authorization code',
+  client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
+  user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
+  redirect_uri         VARCHAR(2000)  NOT NULL COMMENT 'URI to redirect user after authorization',
+  expires              TIMESTAMP      NOT NULL COMMENT 'When the code becomes invalid',
+  scope                VARCHAR(4000)           COMMENT 'Space-delimited list scopes code can request',
+  id_token             VARCHAR(1000)           COMMENT 'JSON web token used for OpenID Connect',
   PRIMARY KEY (authorization_code)
 );
 
 CREATE TABLE oauth_clients (
-  client_id            VARCHAR(80)   NOT NULL COMMENT 'Unique client identifier',
-  client_secret        VARCHAR(80)            COMMENT 'Client secret',
+  client_id            VARCHAR(80)   NOT NULL COMMENT 'A unique client identifier',
+  client_secret        VARCHAR(80)            COMMENT 'Used to secure Client Credentials Grant',
   redirect_uri         VARCHAR(2000)          COMMENT 'Redirect URI used for Authorization Grant',
-  grant_types          VARCHAR(80)            COMMENT 'Space-delimited list of grant types permitted, null = all',
-  scope                VARCHAR(4000)          COMMENT 'Space-delimited list of approved scopes',
-  user_id              INT UNSIGNED           COMMENT 'oauth_users.user_id',
-  public_key           VARCHAR(2000)          COMMENT 'Public key for encryption',
+  grant_types          VARCHAR(80)            COMMENT 'Space-delimited list of permitted grant types',
+  scope                VARCHAR(4000)          COMMENT 'Space-delimited list of permitted scopes',
+  user_id              VARCHAR(80)            COMMENT 'OAUTH_USERS.USER_ID',
   PRIMARY KEY (client_id)
 );
 
@@ -89,17 +76,17 @@ CREATE TABLE oauth_public_keys (
 );
 
 CREATE TABLE oauth_refresh_tokens (
-  refresh_token        VARCHAR(40)    NOT NULL,
-  client_id            VARCHAR(80),
-  user_id              INT UNSIGNED,
-  expires              TIMESTAMP      NOT NULL,
-  scope                VARCHAR(4000),
+  refresh_token        VARCHAR(40)    NOT NULL COMMENT 'System generated refresh token',
+  client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
+  user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
+  expires              TIMESTAMP      NOT NULL COMMENT 'When the token becomes invalid',
+  scope                VARCHAR(4000)           COMMENT 'Space-delimited list scopes token can access',
   PRIMARY KEY (refresh_token)
 );
 
 CREATE TABLE oauth_scopes (
-  scope                VARCHAR(80)    NOT NULL,
-  is_default           BOOLEAN,
+  scope                VARCHAR(80)    NOT NULL COMMENT 'Name of scope, without spaces',
+  is_default           BOOLEAN                 COMMENT 'True to grant scope',
   PRIMARY KEY (scope)
 );
 
