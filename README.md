@@ -6,9 +6,9 @@ DDL to create MySQL oauth user and database for PDO storage support of https://g
 
 ### Create database
 
-    mysql> source oauth.ddl
+    # mysql -uroot -p -f < ./oauth.ddl
 
-If there is an existing `oauth` database, a copy will be saved to `oauth_backup` prior to dropping and creating a new `oauth` database and tables.
+If there is an existing `oauth` database, a copy will be saved to `oauth_backup` prior to dropping and creating a new one. If there is no existing `oauth` database to backup, MySQL will return the error `Table <NAME> doesn't exist` for each table. These can be ignored.
 
 ### Load test data
 
