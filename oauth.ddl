@@ -92,7 +92,7 @@ CREATE TABLE oauth_scopes (
 
 CREATE TABLE oauth_users (
   username            VARCHAR(80),
-  password            VARCHAR(80),
+  password            VARCHAR(255),
   first_name          VARCHAR(80),
   last_name           VARCHAR(80),
   email               VARCHAR(80),
