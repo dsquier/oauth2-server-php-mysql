@@ -25,7 +25,7 @@ CREATE DATABASE oauth;
 USE oauth;
 
 CREATE TABLE oauth_access_tokens (
-  access_token         VARCHAR(40)    NOT NULL COMMENT 'System generated access token',
+  access_token         VARCHAR(40)    NOT NULL COMMENT 'System generated access token. Use appropriate COLLATION for case-sensitive tokens. Related issue https://github.com/rails/rails/issues/20133',
   client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
   user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
   expires              TIMESTAMP      NOT NULL COMMENT 'When the token becomes invalid',
@@ -76,7 +76,7 @@ CREATE TABLE oauth_public_keys (
 );
 
 CREATE TABLE oauth_refresh_tokens (
-  refresh_token        VARCHAR(40)    NOT NULL COMMENT 'System generated refresh token',
+  refresh_token        VARCHAR(40)    NOT NULL COMMENT 'System generated refresh token. Use appropriate COLLATION for case-sensitive tokens. Related issue https://github.com/rails/rails/issues/20133',
   client_id            VARCHAR(80)             COMMENT 'OAUTH_CLIENTS.CLIENT_ID',
   user_id              VARCHAR(80)             COMMENT 'OAUTH_USERS.USER_ID',
   expires              TIMESTAMP      NOT NULL COMMENT 'When the token becomes invalid',
